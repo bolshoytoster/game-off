@@ -1,25 +1,29 @@
-[gd_scene load_steps=5 format=3 uid="uid://d3vy5lfccsb2k"]
+[gd_scene load_steps=6 format=3 uid="uid://d3vy5lfccsb2k"]
 
 [ext_resource type="Texture2D" uid="uid://csp1vhiptas8g" path="res://Tiles/tile_0028.png" id="1_bc4go"]
+[ext_resource type="Material" uid="uid://dxj40sbfuupsb" path="res://greeninator.material" id="1_idjnf"]
 
 [sub_resource type="GDScript" id="GDScript_8qjhu"]
 script/source = "extends Area2D
 
 
-func _on_body_entered(body: CollisionObject2D):
+func _on_body_entered(body: Node2D):
 	if body is Player and not body.keys.is_empty():
 		# Delete a key and also this lock
 		body.keys.pop_back().free()
-		queue_free()
+
+		# Disable the lock
+		process_mode = ProcessMode.PROCESS_MODE_DISABLED
+		visible = false
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_maktp"]
-size = Vector2(64, 64)
+size = Vector2(55, 55)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eaaw6"]
 size = Vector2(54, 54)
 
-[node name="Lock" type="Area2D"]
+[node name="Lock" type="Area2D" groups=["dynamic"]]
 script = SubResource("GDScript_8qjhu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -31,7 +35,8 @@ shape = SubResource("RectangleShape2D_maktp")
 shape = SubResource("RectangleShape2D_eaaw6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = ExtResource("1_idjnf")
 scale = Vector2(3, 3)
 texture = ExtResource("1_bc4go")
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered" flags=3]

@@ -1,0 +1,121 @@
+[gd_scene load_steps=6 format=3 uid="uid://f4msekur4obc"]
+
+[ext_resource type="FontFile" uid="uid://c2ykolve641mx" path="res://PublicPixel-rv0pA.ttf" id="1_cqwm6"]
+[ext_resource type="Texture2D" uid="uid://gv16aynfx12p" path="res://Tiles/tile_0067.png" id="2_figk1"]
+[ext_resource type="Material" uid="uid://dxj40sbfuupsb" path="res://greeninator.material" id="2_hgpud"]
+
+[sub_resource type="Theme" id="Theme_ujkb1"]
+default_font = ExtResource("1_cqwm6")
+default_font_size = 32
+HBoxContainer/constants/separation = 16
+
+[sub_resource type="GDScript" id="GDScript_csl6s"]
+script/source = "extends VBoxContainer
+
+
+# Load saved data
+func _ready():
+	var file = FileAccess.open(\"user://save\", FileAccess.READ)
+
+	if not file:
+		return
+
+	for child in get_children():
+		# If the diamond has been found for this level, show the icon
+		if file.get_8():
+			child.get_child(1).modulate = Color.WHITE
+
+		# Format the level completion time
+		var time_msecs = file.get_32()
+		var time_secs = time_msecs / 1000
+		child.get_child(2).text = \"%02d:%02d.%03d\" \\
+			% [time_secs / 60, time_secs % 60, time_msecs % 1000]
+
+
+func _on_button_pressed(path: String):
+	get_tree().change_scene_to_file(path)
+"
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ujkb1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -264.0
+offset_top = -42.0
+offset_right = 264.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_csl6s")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+material = ExtResource("2_hgpud")
+layout_mode = 2
+text = "level 1"
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+material = ExtResource("2_hgpud")
+layout_mode = 2
+texture = ExtResource("2_figk1")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+material = ExtResource("2_hgpud")
+layout_mode = 2
+text = "00:00.0"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer2"]
+material = ExtResource("2_hgpud")
+layout_mode = 2
+text = "level 2"
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2"]
+modulate = Color(1, 1, 1, 0)
+material = ExtResource("2_hgpud")
+layout_mode = 2
+texture = ExtResource("2_figk1")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+material = ExtResource("2_hgpud")
+layout_mode = 2
+text = "00:00.0"
+
+[node name="Button" type="Button" parent="."]
+material = ExtResource("2_hgpud")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -276.0
+offset_top = 188.0
+offset_right = 276.0
+offset_bottom = 228.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Enter cheat codes"
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Button" to="VBoxContainer" method="_on_button_pressed" binds= [&"level 1.tscn"]]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/Button" to="VBoxContainer" method="_on_button_pressed" binds= [&"level 2.tscn"]]
+[connection signal="pressed" from="Button" to="VBoxContainer" method="_on_button_pressed" binds= [&"cheat.tscn"]]

@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://dg6lm8mymss1o"]
+
+[sub_resource type="GDScript" id="GDScript_pj4jw"]
+script/source = "extends Area2D
+
+
+func _on_body_entered(body: Node2D):
+	if body is Player:
+		# This just saves a snapshot of the scene
+		body.checkpoint = body.snapshot()
+		body.checkpoint_position = position
+
+		# Checkpoints can only be passed once, delete this one
+		queue_free()
+"
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_8ocbi"]
+a = Vector2(0, -108)
+b = Vector2(0, 54)
+
+[node name="Checkpoint" type="Area2D"]
+script = SubResource("GDScript_pj4jw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -18)
+shape = SubResource("SegmentShape2D_8ocbi")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

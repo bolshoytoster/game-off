@@ -1,0 +1,125 @@
+[gd_scene load_steps=11 format=4 uid="uid://qaga66gw0qs1"]
+
+[ext_resource type="PackedScene" uid="uid://do0df4lf2rq2p" path="res://objects/player.tscn" id="1_wi28e"]
+[ext_resource type="Material" uid="uid://dxj40sbfuupsb" path="res://greeninator.material" id="2_22rie"]
+[ext_resource type="Texture2D" uid="uid://q5wmaencl55c" path="res://Tilemap/tilemap_packed.png" id="3_ukxus"]
+[ext_resource type="PackedScene" uid="uid://di6npyeos3ae3" path="res://objects/finish.tscn" id="4_2xv6n"]
+[ext_resource type="LabelSettings" uid="uid://4lykthfhk36u" path="res://label settings.tres" id="4_mxdof"]
+[ext_resource type="PackedScene" uid="uid://cuj4gwrrt6oeh" path="res://objects/diamond.tscn" id="4_phc7a"]
+[ext_resource type="PackedScene" uid="uid://d3vy5lfccsb2k" path="res://objects/lock.tscn" id="5_oywvs"]
+[ext_resource type="PackedScene" uid="uid://c6t75a4u6kpfw" path="res://objects/key.tscn" id="6_ebskd"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_31abd"]
+texture = ExtResource("3_ukxus")
+texture_region_size = Vector2i(18, 18)
+3:1/0 = 0
+3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+2:1/0 = 0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(9, -9, 9, 9, -9, 9, -9, -9)
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+2:6/0 = 0
+2:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+3:6/0 = 0
+3:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+4:1/0 = 0
+4:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+8:4/0 = 0
+1:6/0 = 0
+1:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+11:5/size_in_atlas = Vector2i(1, 2)
+11:5/0 = 0
+5:0/0 = 0
+5:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+1:7/0 = 0
+1:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+4:5/0 = 0
+4:5/0/z_index = -1
+4:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+4:0/0 = 0
+4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(9, -9, 9, 9, -9, 9, -9, -9)
+2:3/0 = 0
+2:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+5:1/0 = 0
+5:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+1:3/0 = 0
+1:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+3:7/0 = 0
+3:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+2:7/0 = 0
+2:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+3:3/0 = 0
+3:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+1:2/0 = 0
+1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+2:2/0 = 0
+2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+3:2/0 = 0
+3:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+0:2/0 = 0
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+2:5/0 = 0
+11:7/0 = 0
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+3:0/0 = 0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+
+[sub_resource type="TileSet" id="TileSet_1n3qn"]
+tile_size = Vector2i(18, 18)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_31abd")
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_wi28e")]
+position = Vector2(0, 18)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+z_index = 1
+material = ExtResource("2_22rie")
+emitting = false
+amount = 64
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 1.0
+particle_flag_align_y = true
+direction = Vector2(0, -1)
+initial_velocity_min = 250.0
+initial_velocity_max = 1000.0
+scale_amount_max = 16.0
+color = Color(0.75, 0.75, 0.75, 1)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+material = ExtResource("2_22rie")
+scale = Vector2(3, 3)
+tile_map_data = PackedByteArray("AAAAAAEAAAACAAMAAAD//wEAAAACAAMAAAABAAEAAAACAAMAAAACAAEAAAACAAMAAAADAAEAAAACAAMAAAAEAAEAAAACAAMAAAAFAAEAAAACAAMAAAAGAAEAAAACAAMAAAAGAAAAAAALAAcAAAD+/wEAAAACAAMAAAD9/wEAAAACAAMAAAD8/wEAAAACAAMAAAA=")
+tile_set = SubResource("TileSet_1n3qn")
+
+[node name="Diamond" parent="." instance=ExtResource("4_phc7a")]
+position = Vector2(-189, 27)
+
+[node name="Label" type="Label" parent="."]
+material = ExtResource("2_22rie")
+offset_left = -711.0
+offset_top = 264.0
+offset_right = -215.0
+offset_bottom = 280.0
+rotation = -1.5708
+text = "Use code MOON for lower gravity"
+label_settings = ExtResource("4_mxdof")
+
+[node name="Key" parent="." instance=ExtResource("6_ebskd")]
+position = Vector2(135, 27)
+
+[node name="Lock" parent="." instance=ExtResource("5_oywvs")]
+position = Vector2(243, 27)
+
+[node name="Finish" parent="." instance=ExtResource("4_2xv6n")]
+position = Vector2(351, 27)
+level = 2

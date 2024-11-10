@@ -1,0 +1,109 @@
+[gd_scene load_steps=8 format=3 uid="uid://0pjyq2vc6bo2"]
+
+[ext_resource type="Material" uid="uid://dxj40sbfuupsb" path="res://greeninator.material" id="1_7grn8"]
+[ext_resource type="Texture2D" uid="uid://bcw8rvark5ge7" path="res://Tiles/tile_0148.png" id="1_08y3i"]
+[ext_resource type="Texture2D" uid="uid://q20vnj16qtvm" path="res://Tiles/tile_0149.png" id="2_ghd6x"]
+
+[sub_resource type="GDScript" id="GDScript_4vvoq"]
+script/source = "extends Area2D
+
+
+## What bit does this represent
+@export var bit: bool
+
+
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var accumulator: Label = $\"../Accumulator\"
+
+
+# On button pressed
+func _on_body_entered(body: CollisionObject2D):
+	if body is Player:
+		animated_sprite.frame = 1
+
+		# Add a bit to the accumulated value if this is the '1' button
+		accumulator.bit -= 1
+		if bit:
+			accumulator.value |= 1 << accumulator.bit
+
+		if accumulator.bit:
+			# If this is just another bit, just add it to the label
+			accumulator.text += '1' if bit else '0'
+		else:
+			# If that was the last bit in this byte, turn it into a character
+			# and see if we have a secret code
+			var c = char(accumulator.value)
+
+			accumulator.bit = 8
+			accumulator.value = 0
+
+			# If it was a non-printable character, just ignore it
+			if not c:
+				accumulator.text = accumulator.string + ' '
+				return
+
+			accumulator.string += c
+
+			match accumulator.string.to_upper():
+				# Lower gravity
+				\"MOON\": Globals.gravity = 8
+				# Lower friction
+				\"ICE\": Globals.friction = .99
+				# Make the max speed massive
+				\"LUDICROUS\": Globals.max_speed = 2048
+				# No match, just set the label
+				_:
+					accumulator.text = accumulator.string + ' '
+					return
+
+			# We got a match, reset the text
+			accumulator.string = \"\"
+			accumulator.text = \"\"
+
+
+func _on_body_exited(_body: Player) -> void:
+	animated_sprite.frame = 0
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cx7dj"]
+size = Vector2(30, 9)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cmr1p"]
+size = Vector2(48, 15)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nj7w6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_08y3i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ghd6x")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Area2D" type="Area2D"]
+position = Vector2(-81, 27)
+script = SubResource("GDScript_4vvoq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 7.5)
+shape = SubResource("RectangleShape2D_cx7dj")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_cmr1p")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = ExtResource("1_7grn8")
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_nj7w6")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
