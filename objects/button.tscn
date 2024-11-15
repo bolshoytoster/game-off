@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://0pjyq2vc6bo2"]
 
 [ext_resource type="Material" uid="uid://dxj40sbfuupsb" path="res://greeninator.material" id="1_7grn8"]
-[ext_resource type="Texture2D" uid="uid://bcw8rvark5ge7" path="res://Tiles/tile_0148.png" id="1_08y3i"]
-[ext_resource type="Texture2D" uid="uid://q20vnj16qtvm" path="res://Tiles/tile_0149.png" id="2_ghd6x"]
+[ext_resource type="Texture2D" uid="uid://2osf1eaevc4q" path="res://Tiles/tile_0148.png" id="1_08y3i"]
+[ext_resource type="Texture2D" uid="uid://dagrsl70kwkxq" path="res://Tiles/tile_0149.png" id="2_ghd6x"]
 
 [sub_resource type="GDScript" id="GDScript_4vvoq"]
 script/source = "extends Area2D
@@ -61,7 +61,7 @@ func _on_body_entered(body: CollisionObject2D):
 			accumulator.text = \"\"
 
 
-func _on_body_exited(_body: Player) -> void:
+func _on_body_exited(_body: PhysicsBody2D):
 	animated_sprite.frame = 0
 "
 

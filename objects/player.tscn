@@ -1,10 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://do0df4lf2rq2p"]
+[gd_scene load_steps=18 format=3 uid="uid://do0df4lf2rq2p"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_r7fa6"]
 [ext_resource type="Material" uid="uid://dxj40sbfuupsb" path="res://greeninator.material" id="2_vut76"]
-[ext_resource type="Texture2D" uid="uid://c0whhe1ivruqp" path="res://Tilemap/tilemap-characters_packed.png" id="3_115g2"]
+[ext_resource type="Texture2D" uid="uid://baesq5d08df4l" path="res://Tilemap/tilemap-characters_packed.png" id="3_115g2"]
 [ext_resource type="Texture2D" uid="uid://drj223ei1piki" path="res://restart.png" id="4_8g35x"]
 [ext_resource type="Texture2D" uid="uid://dtv0hvwqp38jw" path="res://exit.png" id="4_igp4x"]
+[ext_resource type="AudioStream" uid="uid://bb25pakoffdvv" path="res://audio/retro-explode-2-236688.mp3" id="6_5carv"]
+[ext_resource type="AudioStream" uid="uid://b8ksb2og32ikf" path="res://audio/sfx_jump_07-80241.mp3" id="6_vbw3a"]
+[ext_resource type="AudioStream" uid="uid://wnal55tohnox" path="res://audio/impact-sound-effect-8-bit-retro-151796.mp3" id="6_x16ja"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1mqyu"]
 size = Vector2(60, 69)
@@ -33,8 +36,23 @@ animations = [{
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_poig2"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vnk55"]
+content_margin_left = 4.0
+bg_color = Color(0.33, 0.33, 0.33, 0.501961)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0m1tg"]
+content_margin_left = 4.0
+bg_color = Color(0.33, 0.33, 0.33, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_01uif"]
+content_margin_left = 4.0
+bg_color = Color(0, 0, 0, 0.752941)
+
 [sub_resource type="Theme" id="Theme_j6k7w"]
 Button/styles/focus = SubResource("StyleBoxEmpty_poig2")
+Button/styles/hover = SubResource("StyleBoxFlat_vnk55")
+Button/styles/normal = SubResource("StyleBoxFlat_0m1tg")
+Button/styles/pressed = SubResource("StyleBoxFlat_01uif")
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_r7fa6")
@@ -76,6 +94,18 @@ scale = Vector2(3, 3)
 focus_mode = 0
 theme = SubResource("Theme_j6k7w")
 icon = ExtResource("4_igp4x")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_vbw3a")
+volume_db = -10.0
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_x16ja")
+volume_db = -12.0
+
+[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_5carv")
+volume_db = -4.0
 
 [connection signal="pressed" from="Button" to="." method="restart"]
 [connection signal="pressed" from="Button2" to="." method="exit"]

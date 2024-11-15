@@ -1,16 +1,22 @@
-[gd_scene load_steps=6 format=3 uid="uid://d3vy5lfccsb2k"]
+[gd_scene load_steps=7 format=3 uid="uid://d3vy5lfccsb2k"]
 
-[ext_resource type="Texture2D" uid="uid://csp1vhiptas8g" path="res://Tiles/tile_0028.png" id="1_bc4go"]
+[ext_resource type="Texture2D" uid="uid://yk2bs8ng4rtg" path="res://Tiles/tile_0028.png" id="1_bc4go"]
 [ext_resource type="Material" uid="uid://dxj40sbfuupsb" path="res://greeninator.material" id="1_idjnf"]
+[ext_resource type="AudioStream" uid="uid://bi7s48pqasmou" path="res://audio/retro-explode-1-236678.mp3" id="3_0omrv"]
 
 [sub_resource type="GDScript" id="GDScript_8qjhu"]
 script/source = "extends Area2D
+
+
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
 
 func _on_body_entered(body: Node2D):
 	if body is Player and not body.keys.is_empty():
 		# Delete a key and also this lock
 		body.keys.pop_back().free()
+
+		audio_stream_player.play()
 
 		# Disable the lock
 		process_mode = ProcessMode.PROCESS_MODE_DISABLED
@@ -38,5 +44,11 @@ shape = SubResource("RectangleShape2D_eaaw6")
 material = ExtResource("1_idjnf")
 scale = Vector2(3, 3)
 texture = ExtResource("1_bc4go")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("3_0omrv")
+volume_db = -8.0
+max_polyphony = 2
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered" flags=3]

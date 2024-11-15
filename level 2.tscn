@@ -1,13 +1,15 @@
-[gd_scene load_steps=11 format=4 uid="uid://qaga66gw0qs1"]
+[gd_scene load_steps=12 format=4 uid="uid://qaga66gw0qs1"]
 
 [ext_resource type="PackedScene" uid="uid://do0df4lf2rq2p" path="res://objects/player.tscn" id="1_wi28e"]
 [ext_resource type="Material" uid="uid://dxj40sbfuupsb" path="res://greeninator.material" id="2_22rie"]
-[ext_resource type="Texture2D" uid="uid://q5wmaencl55c" path="res://Tilemap/tilemap_packed.png" id="3_ukxus"]
+[ext_resource type="Texture2D" uid="uid://cp02hc48i4471" path="res://Tilemap/tilemap_packed.png" id="3_ukxus"]
 [ext_resource type="PackedScene" uid="uid://di6npyeos3ae3" path="res://objects/finish.tscn" id="4_2xv6n"]
 [ext_resource type="LabelSettings" uid="uid://4lykthfhk36u" path="res://label settings.tres" id="4_mxdof"]
 [ext_resource type="PackedScene" uid="uid://cuj4gwrrt6oeh" path="res://objects/diamond.tscn" id="4_phc7a"]
 [ext_resource type="PackedScene" uid="uid://d3vy5lfccsb2k" path="res://objects/lock.tscn" id="5_oywvs"]
 [ext_resource type="PackedScene" uid="uid://c6t75a4u6kpfw" path="res://objects/key.tscn" id="6_ebskd"]
+
+[sub_resource type="Gradient" id="Gradient_33jb3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_31abd"]
 texture = ExtResource("3_ukxus")
@@ -83,7 +85,7 @@ position = Vector2(0, 18)
 z_index = 1
 material = ExtResource("2_22rie")
 emitting = false
-amount = 64
+amount = 128
 lifetime = 1.5
 one_shot = true
 explosiveness = 1.0
@@ -93,7 +95,7 @@ direction = Vector2(0, -1)
 initial_velocity_min = 250.0
 initial_velocity_max = 1000.0
 scale_amount_max = 16.0
-color = Color(0.75, 0.75, 0.75, 1)
+color_initial_ramp = SubResource("Gradient_33jb3")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 material = ExtResource("2_22rie")
@@ -116,6 +118,24 @@ label_settings = ExtResource("4_mxdof")
 
 [node name="Key" parent="." instance=ExtResource("6_ebskd")]
 position = Vector2(135, 27)
+
+[node name="Key2" parent="." instance=ExtResource("6_ebskd")]
+position = Vector2(135, -30)
+
+[node name="Key3" parent="." instance=ExtResource("6_ebskd")]
+position = Vector2(72, -81)
+
+[node name="Key4" parent="." instance=ExtResource("6_ebskd")]
+position = Vector2(-21, -75)
+
+[node name="Key5" parent="." instance=ExtResource("6_ebskd")]
+position = Vector2(-96, -18)
+
+[node name="Key6" parent="." instance=ExtResource("6_ebskd")]
+position = Vector2(-93, 30)
+
+[node name="Key7" parent="." instance=ExtResource("6_ebskd")]
+position = Vector2(228, -36)
 
 [node name="Lock" parent="." instance=ExtResource("5_oywvs")]
 position = Vector2(243, 27)

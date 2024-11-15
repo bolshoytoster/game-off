@@ -1,15 +1,21 @@
-[gd_scene load_steps=5 format=3 uid="uid://c6t75a4u6kpfw"]
+[gd_scene load_steps=6 format=3 uid="uid://c6t75a4u6kpfw"]
 
-[ext_resource type="Texture2D" uid="uid://cgqsw20dtoi1e" path="res://Tiles/tile_0027.png" id="1_61jmk"]
+[ext_resource type="Texture2D" uid="uid://cyotpbdouy158" path="res://Tiles/tile_0027.png" id="1_61jmk"]
 [ext_resource type="Material" uid="uid://dxj40sbfuupsb" path="res://greeninator.material" id="1_fotn6"]
+[ext_resource type="AudioStream" uid="uid://cyuabcy2m32db" path="res://audio/retro-coin-4-236671.mp3" id="3_dbvut"]
 
 [sub_resource type="GDScript" id="GDScript_3x0q7"]
 script/source = "extends Area2D
 
 
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+
+
 func _on_body_entered(body: Node2D):
 	if body is Player:
 		body.add_key()
+
+		audio_stream_player.play()
 
 		# Disable the key
 		process_mode = ProcessMode.PROCESS_MODE_DISABLED
@@ -30,5 +36,10 @@ z_index = 1
 material = ExtResource("1_fotn6")
 scale = Vector2(3, 3)
 texture = ExtResource("1_61jmk")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("3_dbvut")
+max_polyphony = 2
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered" flags=3]

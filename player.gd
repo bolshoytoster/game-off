@@ -18,10 +18,16 @@ var diamond = false
 ## Did the player have the diamond at the last checkpoint
 var diamond_snapshot = false
 
+## Was the player in the air last frame?
+var in_air = false
+
 ## The time that this level started
 @onready var level_start = Time.get_ticks_msec()
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var jump_audio_player: AudioStreamPlayer = $AudioStreamPlayer
+@onready var land_audio_player: AudioStreamPlayer = $AudioStreamPlayer2
+@onready var death_audio_player: AudioStreamPlayer = $AudioStreamPlayer3
 @onready var blood_emitter: CPUParticles2D = $"../CPUParticles2D" if mortal else null
 
 ## Nodes that need to be updated on reset
@@ -30,6 +36,7 @@ class DynamicNode:
 	# Was this node enabled at the last checkpoint?
 	var enabled: bool
 @onready var checkpoint = snapshot()
+
 
 func add_key():
 	var sprite = Sprite2D.new()
@@ -89,12 +96,15 @@ func exit():
 	get_tree().change_scene_to_file("res://menu.tscn")
 
 
-## Reset to the last checkpoint and spawn blood
 func die():
+	death_audio_player.play()
+
 	blood_emitter.position = position
-	blood_emitter.emitting = true
+	blood_emitter.restart()
 
 	position = checkpoint_position
+	# Don't play the landing sound on respawn
+	in_air = false
 
 
 func _unhandled_input(event: InputEvent):
@@ -102,22 +112,29 @@ func _unhandled_input(event: InputEvent):
 	if event.is_action_pressed("ui_accept") and is_on_floor():
 		velocity.y = -512
 
+		jump_audio_player.play()
+
 
 func _physics_process(_delta: float):
+	move_and_slide()
+
 	var on_floor = is_on_floor()
 
 	# Add the gravity
 	if not on_floor:
+		in_air = true
+
 		velocity.y += Globals.gravity
 
 		# Have the legs out while in the air
 		animated_sprite.frame = 1
 		# Put us halfway through the frame, so it quickly goes back to the first on when we land
 		animated_sprite.frame_progress = .5
+	elif in_air:
+		# If we've just landed, play an impact sound
+		in_air = false
+		land_audio_player.play()
 
-	# If we go too low, respawn at the last checkpoint
-	if position.y > 384:
-		die()
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -137,5 +154,3 @@ func _physics_process(_delta: float):
 		# Don't reset animation when we're in the air
 		if on_floor:
 			animated_sprite.frame = 0
-
-	move_and_slide()
