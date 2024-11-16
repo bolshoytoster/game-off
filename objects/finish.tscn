@@ -5,34 +5,25 @@ script/source = "extends Area2D
 
 
 ## The level that this is in
-@export var level: int
+@export var level: String
 
 
 # When the player touches the finish, return to the menu
 func _on_body_entered(body: Node2D):
 	if body is Player:
-		# Save the data from this level
-		var file = FileAccess.open(\"user://save\", FileAccess.READ_WRITE)
-		if not file:
-			file = FileAccess.open(\"user://save\", FileAccess.WRITE)
+		var code_accumulator: Label = $\"../../Label\"
 
-		file.seek((level - 1) * 5)
+		if level == \"P\" and code_accumulator.text == \"JUM\":
+			Globals.gravity *= .5
+			code_accumulator.text = \"\"
+		else:
+			code_accumulator.text += level
 
-		# Did the user get the diamond?
-		if not file.get_8() and body.diamond:
-			file.seek((level - 1) * 5)
-			file.store_8(1)
+		get_parent().get_parent().loaded_level = null
 
+		body.position = Vector2(5265, 342)
 
-		# Time taken to finish the level in ms
-		var previous_length = file.get_32()
-		var length = Time.get_ticks_msec() - body.level_start
-		# Only write this length if it's the first run of this level or it's the shortest
-		if not previous_length or length < previous_length:
-			file.seek((level - 1) * 5 + 1)
-			file.store_32(length)
-
-		get_tree().change_scene_to_file(\"res://menu.tscn\")
+		get_parent().queue_free()
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lff3d"]

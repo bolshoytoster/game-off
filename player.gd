@@ -13,13 +13,12 @@ var keys: Array[Sprite2D]
 ## The keys at the last checkpoint
 var keys_snapshot: Array[Sprite2D]
 
-## Has the player collected the diamond
-var diamond = false
-## Did the player have the diamond at the last checkpoint
-var diamond_snapshot = false
 
 ## Was the player in the air last frame?
 var in_air = false
+
+## Are we being controlled to automatically jump the gap?
+var being_controlled = false
 
 ## The time that this level started
 @onready var level_start = Time.get_ticks_msec()
@@ -54,7 +53,6 @@ func add_key():
 ## Array of `DynamicNode`s
 func snapshot() -> Array:
 	keys_snapshot = keys.duplicate()
-	diamond_snapshot = diamond
 
 	return get_tree().get_nodes_in_group("dynamic").map(
 		func(node):
@@ -67,8 +65,10 @@ func snapshot() -> Array:
 
 ## Load from the previous checkpoint
 func restart():
+	if being_controlled:
+		return
+
 	position = checkpoint_position
-	diamond = diamond_snapshot
 
 	if keys.size() < keys_snapshot.size():
 		# If there are less keys now, we need to add more
@@ -93,7 +93,8 @@ func restart():
 
 ## Called when the exit button is pressed
 func exit():
-	get_tree().change_scene_to_file("res://menu.tscn")
+	if not being_controlled:
+		get_tree().change_scene_to_file("res://menu.tscn")
 
 
 func die():
@@ -107,12 +108,16 @@ func die():
 	in_air = false
 
 
-func _unhandled_input(event: InputEvent):
-	# Jump
-	if event.is_action_pressed("ui_accept") and is_on_floor():
-		velocity.y = -512
+func jump():
+	velocity.y = -512
 
-		jump_audio_player.play()
+	jump_audio_player.play()
+
+
+func _unhandled_input(event: InputEvent):
+	# Jump if spacebar and on ground
+	if not being_controlled and event.is_action_pressed("ui_accept") and is_on_floor():
+		jump()
 
 
 func _physics_process(_delta: float):
@@ -122,7 +127,12 @@ func _physics_process(_delta: float):
 
 	# Add the gravity
 	if not on_floor:
-		in_air = true
+		if not in_air:
+			in_air = true
+
+			# We want to jump just as we leave the platform
+			if being_controlled:
+				jump()
 
 		velocity.y += Globals.gravity
 
@@ -138,7 +148,7 @@ func _physics_process(_delta: float):
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("ui_left", "ui_right")
+	var direction = 1. if being_controlled else Input.get_axis("ui_left", "ui_right")
 	if direction:
 		velocity.x = clamp(velocity.x + direction * 16, -Globals.max_speed, Globals.max_speed)
 

@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=3 uid="uid://b20p3yfpsouof"]
+
+[ext_resource type="Material" uid="uid://dxj40sbfuupsb" path="res://greeninator.material" id="1_bmwwc"]
+[ext_resource type="LabelSettings" uid="uid://4lykthfhk36u" path="res://label settings.tres" id="2_e7jip"]
+
+[sub_resource type="GDScript" id="GDScript_bhh8g"]
+script/source = "extends Label
+
+
+func _ready():
+	var time_msecs = Time.get_ticks_msec() - Globals.game_start
+	var time_secs = time_msecs / 1000
+	text = \"%02d:%02d.%03d\" \\
+		% [time_secs / 60, time_secs % 60, time_msecs % 1000]
+"
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
+material = ExtResource("1_bmwwc")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -296.0
+offset_top = -36.5
+offset_right = 296.0
+offset_bottom = 36.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Thank you for playing.
+
+It would be longer, but my friend who
+was meant to be making levels didn't.
+
+By the way, you finished in:
+"
+label_settings = ExtResource("2_e7jip")
+
+[node name="Label2" type="Label" parent="."]
+material = ExtResource("1_bmwwc")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.0
+offset_top = 89.0
+offset_right = 96.0
+offset_bottom = 105.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "00:00:00.000"
+label_settings = ExtResource("2_e7jip")
+script = SubResource("GDScript_bhh8g")
